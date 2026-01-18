@@ -1,73 +1,31 @@
-# React + TypeScript + Vite
+# EventHub - Web Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o cliente Web do projeto **EventHub**, desenvolvido em **React**. Através desta interface, administradores podem gerenciar eventos (criar, editar, listar e excluir) com facilidade diretamente pelo navegador.
 
-Currently, two official plugins are available:
+O projeto consome a API RESTful desenvolvida em Spring Boot.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+##  Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Autenticação de Administrador:**
+  * Login seguro com opção de "Lembrar de mim" (Persistência de dados).
+  * Redirecionamento automático para a Dashboard após login.
+* **Cadastro de Administrador:**
+  * Formulário com validação visual de senha e confirmação de senha.
+* **Dashboard de Eventos:**
+  * Visualização de eventos em lista ou grid (Cards).
+  * **Modal de Cadastro:** Adição rápida de eventos sem recarregar a página.
+  * **Edição:** Alteração de data e localização em tempo real.
+  * **Exclusão:** Remoção de eventos com feedback visual.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+##  Tecnologias Utilizadas
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* **[React](https://react.dev/)** - Biblioteca principal.
+* **[React Router Dom](https://reactrouter.com/)** - Navegação entre páginas (Login, Cadastro, Home).
+* **[Axios](https://axios-http.com/)** - Requisições HTTP para o Backend.
+* **[Styled Components](https://styled-components.com/)** - Estilização.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
