@@ -16,8 +16,8 @@ import { ModalAlert } from '../../components/ModalAlert';
 
 import { 
   Container, Header, Title, ButtonAdd, Grid, EventCard, 
-  CardImageContainer, EventImage, CardContent, CardTitle, 
-  CardText, CardActions, ActionButton, 
+  CardImageContainer, EventImage, CardBody, DateBox, DateDay, DateMonth, DateYear,
+  CardContent, CardTitle, CardText, CardActions, ActionButton, 
   FormGroup, Label, Input, 
   UploadContainer, UploadLabel, HiddenInput, UploadStatus,
   ModalFooter, FilterContainer, FilterButton, FilterDropdown, FilterItem
@@ -92,6 +92,7 @@ export const Home = ({ onInputChange }: { onInputChange?: (e: ChangeEvent<HTMLIn
     setCurrentEvent(prev => ({ ...prev, [name]: value }));
   };
   const handleInputChange = onInputChange || defaultOnInputChange;
+
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const arquivo = e.target.files?.[0];
     if (arquivo) {
@@ -102,6 +103,7 @@ export const Home = ({ onInputChange }: { onInputChange?: (e: ChangeEvent<HTMLIn
       leitor.readAsDataURL(arquivo);
     }
   };
+
   const saveEvent = async () => {
     const dto = {
       name: currentEvent.name || '',
@@ -124,6 +126,7 @@ export const Home = ({ onInputChange }: { onInputChange?: (e: ChangeEvent<HTMLIn
       showAlert('Erro ao salvar informações', 'error');
     }
   };
+
   const deleteEvent = async () => {
     if (!currentEvent.id) return;
     try {
@@ -136,6 +139,16 @@ export const Home = ({ onInputChange }: { onInputChange?: (e: ChangeEvent<HTMLIn
     }
   };
 
+  const getDateInfo = (dateString: string | undefined) => {
+    if (!dateString) return { day: '--', month: '---', year: '----' };
+    const meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+    const parts = dateString.split('-'); 
+    const year = parts[0];
+    const day = parts[2];
+    const monthIndex = Number.parseInt(parts[1]) - 1;
+    const month = meses[monthIndex];
+    return { day, month, year };
+  };
 
   return (
     <>
@@ -203,34 +216,45 @@ export const Home = ({ onInputChange }: { onInputChange?: (e: ChangeEvent<HTMLIn
         </Header>
 
         <Grid>
-          {filteredEvents.map((evento) => (
-            <EventCard key={evento.id} $darkMode={darkMode} onClick={() => { setCurrentEvent(evento); setModalType('view'); }}>
-              <CardImageContainer $darkMode={darkMode}>
-                <EventImage 
-                  src={evento.imageUrl || ImageDefault} 
-                  alt={evento.name}
-                  onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = ImageDefault; }}
-                />
-              </CardImageContainer>
-              <CardContent>
-                <CardTitle $darkMode={darkMode}>{evento.name}</CardTitle>
-                <CardText $darkMode={darkMode}><FiCalendar /> {evento.date}</CardText>
-                <CardText $darkMode={darkMode}><FiClock /> {evento.time}</CardText>
-                <CardText $darkMode={darkMode}><FiMapPin /> {evento.location}</CardText>
-              </CardContent>
-              <CardActions $darkMode={darkMode}>
-                <ActionButton $variant="edit" $darkMode={darkMode} onClick={(e) => { e.stopPropagation(); setCurrentEvent(evento); setModalType('edit'); }}>
-                  <FiEdit3 size={18} />
-                </ActionButton>
-                <ActionButton $variant="delete" $darkMode={darkMode} onClick={(e) => { e.stopPropagation(); setCurrentEvent(evento); setIsDeleteModalOpen(true); }}>
-                  <FiTrash2 size={18} />
-                </ActionButton>
-              </CardActions>
-            </EventCard>
-          ))}
+          {filteredEvents.map((evento) => {
+            const { day, month, year } = getDateInfo(evento.date);
+            return (
+              <EventCard key={evento.id} $darkMode={darkMode} onClick={() => { setCurrentEvent(evento); setModalType('view'); }}>
+                <CardImageContainer $darkMode={darkMode}>
+                  <EventImage 
+                    src={evento.imageUrl || ImageDefault} 
+                    alt={evento.name}
+                    onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = ImageDefault; }}
+                  />
+                </CardImageContainer>
+                
+                <CardBody>
+                  <DateBox $darkMode={darkMode}>
+                    <DateDay $darkMode={darkMode}>{day}</DateDay>
+                    <DateMonth $darkMode={darkMode}>{month}</DateMonth>
+                    <DateYear $darkMode={darkMode}>{year}</DateYear>
+                  </DateBox>
+                  <CardContent>
+                    <CardTitle $darkMode={darkMode}>{evento.name}</CardTitle>
+                    <CardText $darkMode={darkMode}><FiClock /> {evento.time}</CardText>
+                    <CardText $darkMode={darkMode}><FiMapPin /> {evento.location}</CardText>
+                  </CardContent>
+                </CardBody>
+
+                <CardActions $darkMode={darkMode}>
+                  <ActionButton $variant="edit" $darkMode={darkMode} onClick={(e) => { e.stopPropagation(); setCurrentEvent(evento); setModalType('edit'); }}>
+                    <FiEdit3 size={18} />
+                  </ActionButton>
+                  <ActionButton $variant="delete" $darkMode={darkMode} onClick={(e) => { e.stopPropagation(); setCurrentEvent(evento); setIsDeleteModalOpen(true); }}>
+                    <FiTrash2 size={18} />
+                  </ActionButton>
+                </CardActions>
+              </EventCard>
+            );
+          })}
           {filteredEvents.length === 0 && !loading && (
              <div style={{ gridColumn: '1/-1', textAlign: 'center', color: darkMode ? '#94a3b8' : '#64748b', marginTop: 20 }}>
-                Nenhum evento encontrado neste filtro.
+               Nenhum evento encontrado neste filtro.
              </div>
           )}
         </Grid>

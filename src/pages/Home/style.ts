@@ -85,7 +85,7 @@ export const ButtonAdd = styled.button`
 
 export const Grid = styled.main`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 25px;
   max-width: 1200px;
   width: 100%;
@@ -121,23 +121,62 @@ export const EventImage = styled.img`
   object-fit: cover;
 `;
 
-export const CardContent = styled.div`
+export const CardBody = styled.div`
+  display: flex;
   padding: 20px;
+  gap: 16px;
+  align-items: flex-start;
+`;
+
+export const DateBox = styled.div<ThemeProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  padding-right: 16px;
+  border-right: 1px solid ${props => props.$darkMode ? '#334155' : '#e2e8f0'};
+`;
+
+export const DateDay = styled.span<ThemeProps>`
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+  color: ${props => props.$darkMode ? '#0FFCBE' : '#106EBE'};
+  margin-bottom: 2px;
+`;
+
+export const DateMonth = styled.span<ThemeProps>`
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: ${props => props.$darkMode ? '#94a3b8' : '#64748b'};
+`;
+
+export const DateYear = styled.span<ThemeProps>`
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: ${props => props.$darkMode ? '#64748b' : '#94a3b8'};
+  margin-top: 2px;
+`;
+
+export const CardContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 `;
 
 export const CardTitle = styled.h3<ThemeProps>`
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
+  line-height: 1.4;
   color: ${props => props.$darkMode ? '#f1f5f9' : '#0f172a'};
 `;
 
 export const CardText = styled.p<ThemeProps>`
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: ${props => props.$darkMode ? '#94a3b8' : '#64748b'};
   display: flex;
   align-items: center;
@@ -145,6 +184,7 @@ export const CardText = styled.p<ThemeProps>`
 
   svg {
     color: #106EBE;
+    flex-shrink: 0;
   }
 `;
 
